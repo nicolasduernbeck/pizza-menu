@@ -58,6 +58,50 @@ function App() {
   );
 }
 
+function Menu() {
+  const pizzas = pizzaData;
+  return (
+    <main className="menu">
+      <h2>Our menu</h2>
+      {pizzas.length > 0 ? (
+        <>
+          <p>The best pizza in the world. Choose one from our 6 Dishes.</p>
+          <ul className="pizzas">
+            {pizzas.map(pizza => {
+              return (
+                <Pizza
+                  name={pizza.name}
+                  ingredients={pizza.ingredients}
+                  price={pizza.price}
+                  photo={pizza.photoName}
+                  key={pizza.name}
+                  soldOut={pizza.soldOut}
+                />
+              );
+            })}
+          </ul>
+        </>
+      ) : (
+        <h2>We are still working on our menu</h2>
+      )}
+    </main>
+  );
+}
+
+function Pizza(props) {
+  return (
+    <li className={`pizza ${props.soldOut ? 'sold-out' : ''}`}>
+      <img src={props.photo} alt={props.name}></img>
+      <div>
+        <h3>{props.name}</h3>
+        <p>{props.ingredients}</p>
+        <span>{props.price}</span>
+        <span>{props.soldOut ? 'SOLD OUT' : props.price}</span>
+      </div>
+    </li>
+  );
+}
+
 function Header() {
   return (
     <header className="header">
@@ -66,33 +110,22 @@ function Header() {
   );
 }
 
-function Menu() {
-  return (
-    <main className="menu">
-      <h2>Our menu</h2>
-      <Pizza />
-      <Pizza />
-      <Pizza />
-    </main>
-  );
-}
-
-function Pizza() {
-  return (
-    <div>
-      <img src="pizzas/spinaci.jpg" alt="img of a spinaci pizza"></img>
-      <h3>Pizza Spinaci</h3>
-      <p>Tomato, Mozarella, Spinaci, Ricotta and cheese</p>
-    </div>
-  );
-}
-
-function Footer() {
+function Footer(props) {
+  console.log(props);
   const openHour = 12;
   const closeHour = 22;
   const hour = new Date().getHours();
   const isOpen = hour >= openHour && hour <= closeHour;
-  return <footer>We are {isOpen ? 'open' : 'closed'}</footer>;
+  return <footer className="footer">{isOpen && <Order />}</footer>;
+}
+
+function Order() {
+  return (
+    <div className="oder">
+      <p>We are open</p>
+      <button className="btn">Order now</button>
+    </div>
+  );
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
